@@ -15,7 +15,10 @@ public class RandomProducer {
         String msg="";
 
         Properties props=new Properties();
-        props.put("bootstrap.servers","localhost:19092,localhost:29092");
+       // props.put("bootstrap.servers","0.0.0.0:19092,0.0.0.0:29092");
+        props.put("bootstrap.servers","127.0.0.1:9092,127.0.0.1:9091,127.0.0.1:9093");
+
+        //props.put("bootstrap.servers","kafka-1:19092,kafka-2:29092,kafka-3:39092");
         props.put("key.serializer","org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer","org.apache.kafka.common.serialization.StringSerializer");
 

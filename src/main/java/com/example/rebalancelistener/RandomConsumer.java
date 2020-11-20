@@ -35,10 +35,11 @@ public class RandomConsumer {
         String msg="";
         String groupName="RG";
         Properties props=new Properties();
-        props.put("bootstrap.servers","localhost:19092,localhost:29092");
+        //props.put("bootstrap.servers","localhost:19092,localhost:29092");
+        props.put("bootstrap.servers","127.0.0.1:9092,127.0.0.1:9091,127.0.0.1:9093");
         props.put("group.id",groupName);
-        props.put("key.serializer","org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("value.serializer","org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("key.deserializer","org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("value.deserializer","org.apache.kafka.common.serialization.StringDeserializer");
         ConsumerRebalanceListener objConsumerRebalanceListener=null;
         KafkaConsumer<String,String> consumer=new KafkaConsumer(props);
 
@@ -46,14 +47,16 @@ public class RandomConsumer {
         TestConsumerRebalanceListener objTestConsumerRebalanceListener= new TestConsumerRebalanceListener(consumer,name);
         consumer.subscribe(Collections.singleton(topicName),objTestConsumerRebalanceListener);
         try{
-            while(true){
+            //while(true){
                 ConsumerRecords<String,String> records=consumer.poll(100);
                 for(ConsumerRecord<String,String> record: records){
-
+                    System.out.println("record###"+record.topic());
+                    System.out.println("record###"+record.partition());
+                    System.out.println("record###"+record.value());
                     objTestConsumerRebalanceListener.addOffset(record.topic(),record.partition(), record.offset());
 
                 }
-            }
+            //}
         }catch(Exception e){
             e.printStackTrace();
         }
